@@ -58,21 +58,35 @@ function fnGetProducts(){
 		    	//Need to check quantity of selection
 		    	//var haveStock = false;
 		    	//haveStock = fnCheckStock(inquirerResponse.itemid);
-		    	var sql = "SELECT stock_quantity, product_name FROM products WHERE item_id = " + inquirerResponse.itemid;
+		    	var sql = "SELECT stock_quantity, product_name, price FROM products WHERE item_id = " + inquirerResponse.itemid;
 		  		//console.log(sql);
 		  		con.query(sql, function (err, result) {
 		    		//console.log(result);
 		    		if (err) throw err;
 		    		if(result[0].stock_quantity >= inquirerResponse.quantity){
-		      		console.log("We have these in stock");
-		      		//check stock
+		      		//console.log("We have these in stock");
+		      		//calculate price
+		      		var orderPrice = result[0].price * inquirerResponse.quantity;
+
 		      		console.log("Thank you " + inquirerResponse.username + " for " + 
 		    		"ordering item " + inquirerResponse.itemid +
 		    		" Description: " + result[0].product_name +  
-		    		" count: " + inquirerResponse.quantity);
+		    		" Count: " + inquirerResponse.quantity);
+		    		console.log("Your oder total is: $" + orderPrice);
+			    	
+
+			    	var intNewQuantity = result[0].stock_quantity - inquirerResponse.quantity;
+			    	var sqlUpdateQ = "UPDATE products SET stock_quantity = " + intNewQuantity +
+			    	" WHERE item_id = " + inquirerResponse.itemid;
+		    		//console.log(sqlUpdateQ);
+		    		con.query(sqlUpdateQ, function (err, updateresult) {
+		    		//console.log(result);
+		    		if (err) throw err;
+		    		console.log("Inventory Udpated for " + result[0].product_name);
+		    	});
 		      	}
 		      	else{
-		      		console.log("Out of stock");
+		      		console.log("Insufficient Inventory....transaction cancelled.");
 		      	}
 
 		    	});
@@ -95,28 +109,7 @@ function fnGetProducts(){
 		//con.end();
 	}
 
-	function fnCheckStock(itemid){
-		var instock = true;
-		console.log("Checking quantity of item: " + itemid);
-		//connect to datasource and check quantity
-		  con.connect(function(err) {
-		  if (err) throw err;
-		  //console.log("Connected!");
-		  var sql = "SELECT stock_quantity FROM products WHERE item_id = " + itemid;
-		  console.log(sql);
-		  con.query(sql, function (err, result) {
-		    console.log(result);
-		    if (err) throw err;
-		    //console.log(result);
-		    //output results formatted nicely
-		    console.log(result);
-
-			return instock;
-	    	});
-		});
-			
-			
-		}
+	
 
 fnGetProducts();
 //con.end();
