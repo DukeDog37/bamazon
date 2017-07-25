@@ -1,0 +1,12 @@
+insert into products(item_id, product_name, department_name, price, stock_quantity) values(1, "Reebok Crossfit Nano 7.0 Weave", "Shoes", 130.00, 200);
+insert into products(item_id, product_name, department_name, price, stock_quantity) values(2, "Nike Metcon DSX Flynit", "Shoes", 159.00, 200);
+insert into products(item_id, product_name, department_name, price, stock_quantity) values(3, "Nike Romaleos 3 Weightlifting Shoes", "Shoes", 149.00, 200);
+insert into products(item_id, product_name, department_name, price, stock_quantity) values(4, "Rogue Basic Shirt", "Apparel", 16.99, 500);
+insert into products(item_id, product_name, department_name, price, stock_quantity) values(5, "Rogue International Shirt", "Apparel", 19.99, 250);
+insert into products(item_id, product_name, department_name, price, stock_quantity) values(6, "Rogue Patch Trucker Hat", "Apparel", 24.99, 200);
+insert into products(item_id, product_name, department_name, price, stock_quantity) values(7, "Rogue-Lacrosse Balls", "Mobility", 15.00, 654);
+insert into products(item_id, product_name, department_name, price, stock_quantity) values(8, "Rogue-Monster Bands", "Mobility", 14.95, 234);
+insert into products(item_id, product_name, department_name, price, stock_quantity) values(9, "Rogue-Foam Rollers", "Mobility", 19.99, 678);
+insert into products(item_id, product_name, department_name, price, stock_quantity) values(10, "Rogue-Kettlebells", "Conditioning", 22.07, 165);
+insert into products(item_id, product_name, department_name, price, stock_quantity) values(11, "Rogue-Flat Pack Games Box", "Conditioning", 65.00, 22);
+insert into products(item_id, product_name, department_name, price, stock_quantity) values(12, "Rogue-Medicine Balls", "Conditioning", 125.00, 305);
