@@ -1,14 +1,14 @@
 var mysql = require('mysql');
 var inquirer = require("inquirer");
-var myDataKeys = require("./keys.js");
-var keys = myDataKeys.dtkeys;
+//var myDataKeys = require("./keys.js");
+/*var keys = myDataKeys.dtkeys;
 var con = mysql.createConnection({
 		  host: "localhost",
 		  user: keys['user'],
 		  password: keys['password'],
 		  database: keys['database']
-		});
-
+		});*/
+var mysql = require('./mysql.js').pool;
 	function takeAction(){
 		inquirer
 			.prompt([
@@ -20,7 +20,7 @@ var con = mysql.createConnection({
 			    },
 			    {
 			      type: "confirm",
-			      message: "Are you sure:",
+			      message: "Confirm Management Action Selection.",
 			      name: "confirm",
 			      default: true    
 			    }]).then(function(inquirerResponse) {
@@ -29,19 +29,20 @@ var con = mysql.createConnection({
 
 		    			switch(inquirerResponse.reqaction[0]){
 						case "View Products For Sale":
-							console.log("products");
+							//console.log("products");
 							fnViewProducts();
 						break;
 						case "View Low Inventory":
-							console.log("low inventory");
+							//console.log("low inventory");
 							fnViewLowInventory();
 						break;
 						case "Add To Inventory":
-							console.log("add inventory");
+							//console.log("add inventory");
 							fnAddInventory();
 						break;
 						case "Add New Product":
 							console.log("new product");
+							fnAddProduct();
 						break;
 						default:
 							console.log("Did not recognize the command");
@@ -58,10 +59,11 @@ takeAction();
 //View Products for Sale
 //If a manager selects View Products for Sale, the app should list every available item: the item IDs, names, prices, and quantities.
 function fnViewProducts(){
-		con.connect(function(err) {
+		mysql.getConnection(function(err, conn){
+		
 		  if (err) throw err;
 		  var sql = "SELECT * FROM products";
-		  con.query(sql, function (err, result) {
+		  conn.query(sql, function (err, result) {
 		    if (err) throw err;
 		    //output results formatted nicely
 		    console.log("======================PRODUCTS LISTING====================");
@@ -69,6 +71,11 @@ function fnViewProducts(){
 		    for(i = 0; i < result.length; i++){
 		    	console.log(result[i].item_id + "     " + result[i].product_name + "     " + result[i].price + "         " + result[i].stock_quantity);
 		    }
+		    if(conn){
+			 	conn.release();
+			 	mysql.end();
+			 	
+			}
 			});
 
 		});
@@ -77,10 +84,10 @@ function fnViewProducts(){
 //View Low Inventory
 //If a manager selects View Low Inventory, then it should list all items with an inventory count lower than five.
 function fnViewLowInventory(){
-		con.connect(function(err) {
+		mysql.getConnection(function(err, conn){
 		  if (err) throw err;
 		  var sql = "SELECT * FROM products WHERE stock_quantity < 200";
-		  con.query(sql, function (err, result) {
+		  conn.query(sql, function (err, result) {
 		    if (err) throw err;
 		    //output results formatted nicely
 		    console.log("=============LOW INVENTORY PRODUCTS LISTING====================");
@@ -88,6 +95,11 @@ function fnViewLowInventory(){
 		    for(i = 0; i < result.length; i++){
 		    	console.log(result[i].item_id + "     " + result[i].product_name + "     " + result[i].price + "         " + result[i].stock_quantity);
 		    }
+		    if(conn){
+			 	conn.release();
+			 	mysql.end();
+			 	
+			}
 			});
 
 		});
@@ -97,10 +109,10 @@ function fnViewLowInventory(){
 //Add to Inventory
 //If a manager selects Add to Inventory, your app should display a prompt that will let the manager "add more" of any item currently in the store.
 function fnAddInventory(){
-con.connect(function(err) {
+		mysql.getConnection(function(err, conn){
 		  if (err) throw err;
 		  var sql = "SELECT * FROM products";
-		  con.query(sql, function (err, result) {
+		  conn.query(sql, function (err, result) {
 		    if (err) throw err;
 		    var strChoices = [];
 		    for(i = 0; i < result.length; i++){
@@ -116,7 +128,7 @@ con.connect(function(err) {
 						    },
 						    {
 						      type: "confirm",
-						      message: "Are you sure:",
+						      message: "Confirm product selection.",
 						      name: "confirm",
 						      default: true
 						    }]).then(function(inquirerResponse) {
@@ -132,13 +144,13 @@ con.connect(function(err) {
 										    },
 										    {
 										      type: "confirm",
-										      message: "Are you sure:",
+										      message: "Confirm to add inventory.",
 										      name: "confirm",
 										      default: true
 										    }]).then(function(inquirerResponse) {
 										    	if (inquirerResponse.confirm == true) {
-										    	   	console.log(inquirerResponse.quantity);
-										    		fnRestock(strProduct, inquirerResponse.quantity);
+										    	   	//console.log(inquirerResponse.quantity);
+										    		fnRestock(strProduct, inquirerResponse.quantity, conn);
 										    }
 										    });
 
@@ -150,16 +162,21 @@ con.connect(function(err) {
 
 }
 
-function fnRestock(ProductName, Quantity){
+function fnRestock(ProductName, Quantity, conn){
 	var sql = "UPDATE products SET stock_quantity = stock_quantity + " + Quantity + 
 	" WHERE product_name = '" + ProductName + "'";
-	con.query(sql, function (err, result) {
+	conn.query(sql, function (err, result) {
 	   	if (err){
 	   		throw err;
 	   	} 
 	   	else{
 	   		console.log(ProductName + " stock has been updated.");
 	   	}
+	   	if(conn){
+			 	conn.release();
+			 	mysql.end();
+			 	
+		}
 		    //output results formatted nicely
 	});
 
@@ -167,3 +184,83 @@ function fnRestock(ProductName, Quantity){
 
 //Add New Product
 //If a manager selects Add New Product, it should allow the manager to add a completely new product to the store.
+function fnAddProduct(){
+	//console.log("in function");
+	mysql.getConnection(function(err, conn){
+		if (err){
+			//console.log("in connect error");
+			throw err;
+		} 
+		//console.log("before sql build");
+		var sql = "SELECT department_name FROM departments";
+		//console.log("before run sql");
+		///console.log(sql);
+		conn.query(sql, function (err, result) {
+			if (err){
+				throw err;
+			} 
+			else{
+				//populate array of departments to select from
+				//console.log("before pop array of depts");
+				var strChoices = [];
+			    for(i = 0; i < result.length; i++){
+			    	//console.log(result[i].department_name);
+				    strChoices.push(result[i].department_name);
+			    }
+			}
+		
+		inquirer
+			.prompt([
+			{
+				type: "input",
+				message: "What is the name of the product to add?",
+				name: "prodname"
+			},
+			{
+				type: "checkbox",
+				message: "What Department should the product list under?",
+				choices: strChoices,
+				name: "deptname"
+			},
+			{
+				type: "input",
+				message: "What is the sale price of the new item?",
+				name: "saleprice"
+			},
+			{
+				type: "input",
+				message: "What amount of stock do you have on hand?",
+				name: "stocklevel"
+			},
+			{
+				type: "confirm",
+				message: "Confirm to add inventory.",
+				name: "confirm",
+				default: true
+				}]).then(function(inquirerResponse) {
+				if (inquirerResponse.confirm == true) {
+					var sql = "insert into products(product_name, department_name, price, stock_quantity) values( " +
+					"'" + inquirerResponse.prodname + "', '" + inquirerResponse.deptname + "', " + inquirerResponse.saleprice + ", " + inquirerResponse.stocklevel + ")"; 
+					conn.query(sql, function (err, result) {
+				   	if (err){
+				   		throw err;
+				   	} 
+				   	else{
+				   		console.log(inquirerResponse.prodname + " has been added to available products listing.");
+				   	}
+				   	if(conn){
+						 	conn.release();
+						 	mysql.end();
+						 	
+					}
+				});
+			}
+		});
+});
+
+
+		
+
+	});
+
+}

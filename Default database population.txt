@@ -1,12 +1,36 @@
-insert into products(item_id, product_name, department_name, price, stock_quantity) values(1, "Reebok Crossfit Nano 7.0 Weave", "Shoes", 130.00, 200);
-insert into products(item_id, product_name, department_name, price, stock_quantity) values(2, "Nike Metcon DSX Flynit", "Shoes", 159.00, 200);
-insert into products(item_id, product_name, department_name, price, stock_quantity) values(3, "Nike Romaleos 3 Weightlifting Shoes", "Shoes", 149.00, 200);
-insert into products(item_id, product_name, department_name, price, stock_quantity) values(4, "Rogue Basic Shirt", "Apparel", 16.99, 500);
-insert into products(item_id, product_name, department_name, price, stock_quantity) values(5, "Rogue International Shirt", "Apparel", 19.99, 250);
-insert into products(item_id, product_name, department_name, price, stock_quantity) values(6, "Rogue Patch Trucker Hat", "Apparel", 24.99, 200);
-insert into products(item_id, product_name, department_name, price, stock_quantity) values(7, "Rogue-Lacrosse Balls", "Mobility", 15.00, 654);
-insert into products(item_id, product_name, department_name, price, stock_quantity) values(8, "Rogue-Monster Bands", "Mobility", 14.95, 234);
-insert into products(item_id, product_name, department_name, price, stock_quantity) values(9, "Rogue-Foam Rollers", "Mobility", 19.99, 678);
-insert into products(item_id, product_name, department_name, price, stock_quantity) values(10, "Rogue-Kettlebells", "Conditioning", 22.07, 165);
-insert into products(item_id, product_name, department_name, price, stock_quantity) values(11, "Rogue-Flat Pack Games Box", "Conditioning", 65.00, 22);
-insert into products(item_id, product_name, department_name, price, stock_quantity) values(12, "Rogue-Medicine Balls", "Conditioning", 125.00, 305);
+CREATE TABLE bamazon.products (
+    item_id int NOT NULL AUTO_INCREMENT,
+    product_name varchar(255) NOT NULL,
+    department_name varchar(255),
+    price decimal(6,2),
+    stock_quantity int,
+    PRIMARY KEY (item_id)
+);
+
+
+CREATE TABLE bamazon.products (
+	department_id int NOT NULL AUTO_INCREMENT,
+	department_name varchar(255),
+	over_head_costs decimal(10,2),
+	product_sales decimal(10,2),
+	PRIMARY KEY (department_id));
+
+insert into departments(department_name, over_head_costs, product_sales) values("Shoes", 2345.98, 
+1234.55);
+insert into departments(department_name, over_head_costs, product_sales) values("Apparel", 32444.98, 334453.99);
+insert into departments(department_name, over_head_costs, product_sales) values("Conditioning", 55432.98, 121234.55);
+insert into departments(department_name, over_head_costs, product_sales) values("Mobility", 22443.98, 111234.55);
+
+
+insert into products(product_name, department_name, price, stock_quantity) values("Reebok Crossfit Nano 7.0 Weave", "Shoes", 130.00, 200);
+insert into products(product_name, department_name, price, stock_quantity) values("Nike Metcon DSX Flynit", "Shoes", 159.00, 200);
+insert into products(product_name, department_name, price, stock_quantity) values("Nike Romaleos 3 Weightlifting Shoes", "Shoes", 149.00, 200);
+insert into products(product_name, department_name, price, stock_quantity) values("Rogue Basic Shirt", "Apparel", 16.99, 500);
+insert into products(product_name, department_name, price, stock_quantity) values("Rogue International Shirt", "Apparel", 19.99, 250);
+insert into products(product_name, department_name, price, stock_quantity) values("Rogue Patch Trucker Hat", "Apparel", 24.99, 200);
+insert into products(product_name, department_name, price, stock_quantity) values("Rogue-Lacrosse Balls", "Mobility", 15.00, 654);
+insert into products(product_name, department_name, price, stock_quantity) values("Rogue-Monster Bands", "Mobility", 14.95, 234);
+insert into products(product_name, department_name, price, stock_quantity) values("Rogue-Foam Rollers", "Mobility", 19.99, 678);
+insert into products(product_name, department_name, price, stock_quantity) values("Rogue-Kettlebells", "Conditioning", 22.07, 165);
+insert into products(product_name, department_name, price, stock_quantity) values("Rogue-Flat Pack Games Box", "Conditioning", 65.00, 22);
+insert into products(product_name, department_name, price, stock_quantity) values("Rogue-Medicine Balls", "Conditioning", 125.00, 305);
