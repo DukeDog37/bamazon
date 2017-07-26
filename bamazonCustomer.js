@@ -70,6 +70,18 @@ function fnGetProducts(){
 			    			console.log(result[0].department_name + " Department Total Sales Updated");
 			    		}
 			    	});
+			    	//update product table record's product_sales with new sale amount
+			    	var sqlProdSaleUpd = "UPDATE products SET product_sales = (product_sales + " + orderPrice + ") " +
+			    	"WHERE item_id = " + inquirerResponse.itemid;
+
+			    	conn.query(sqlProdSaleUpd, function (err, updateresult) {
+		    			if (err){
+			    			throw err;
+			    		}
+			    		else{
+			    			console.log("ITEM_ID: " + inquirerResponse.itemid + " product_sales value updated");
+			    		}
+			    	});
 			    	var intNewQuantity = result[0].stock_quantity - inquirerResponse.quantity;
 			    	var sqlUpdateQ = "UPDATE products SET stock_quantity = " + intNewQuantity +
 			    	" WHERE item_id = " + inquirerResponse.itemid;

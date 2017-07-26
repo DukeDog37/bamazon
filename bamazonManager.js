@@ -1,13 +1,6 @@
 var mysql = require('mysql');
 var inquirer = require("inquirer");
-//var myDataKeys = require("./keys.js");
-/*var keys = myDataKeys.dtkeys;
-var con = mysql.createConnection({
-		  host: "localhost",
-		  user: keys['user'],
-		  password: keys['password'],
-		  database: keys['database']
-		});*/
+
 var mysql = require('./mysql.js').pool;
 	function takeAction(){
 		inquirer
