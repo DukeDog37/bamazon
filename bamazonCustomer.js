@@ -56,15 +56,12 @@ function fnGetProducts(){
     
 		    if (inquirerResponse.confirm == true) {
 		    	//Need to check quantity of selection
-		    	//var haveStock = false;
-		    	//haveStock = fnCheckStock(inquirerResponse.itemid);
 		    	var sql = "SELECT stock_quantity, product_name, price FROM products WHERE item_id = " + inquirerResponse.itemid;
-		  		//console.log(sql);
 		  		con.query(sql, function (err, result) {
-		    		//console.log(result);
+		    		
 		    		if (err) throw err;
 		    		if(result[0].stock_quantity >= inquirerResponse.quantity){
-		      		//console.log("We have these in stock");
+		      		
 		      		//calculate price
 		      		var orderPrice = result[0].price * inquirerResponse.quantity;
 
@@ -78,7 +75,7 @@ function fnGetProducts(){
 			    	var intNewQuantity = result[0].stock_quantity - inquirerResponse.quantity;
 			    	var sqlUpdateQ = "UPDATE products SET stock_quantity = " + intNewQuantity +
 			    	" WHERE item_id = " + inquirerResponse.itemid;
-		    		//console.log(sqlUpdateQ);
+		    		console.log(sqlUpdateQ);
 		    		con.query(sqlUpdateQ, function (err, updateresult) {
 		    		//console.log(result);
 		    		if (err) throw err;
@@ -94,11 +91,7 @@ function fnGetProducts(){
 		      else{
 		      	//did not confirm
 		      	console.log(inquirerResponse.username + ", your order has been cancelled...");
-
 		      }
-		      	
-		      	
-
 			});
 			//close database connection
 		    //con.end();
@@ -113,6 +106,3 @@ function fnGetProducts(){
 
 fnGetProducts();
 //con.end();
-//The app should then prompt users with two messages.
-//The first should ask them the ID of the product they would like to buy.
-//The second message should ask how many units of the product they would like to buy.
