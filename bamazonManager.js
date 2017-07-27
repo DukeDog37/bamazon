@@ -1,5 +1,6 @@
 var mysql = require('mysql');
 var inquirer = require("inquirer");
+var nicetable = require('console.table');
 
 var mysql = require('./mysql.js').pool;
 	function takeAction(){
@@ -59,11 +60,12 @@ function fnViewProducts(){
 		  conn.query(sql, function (err, result) {
 		    if (err) throw err;
 		    //output results formatted nicely
-		    console.log("======================PRODUCTS LISTING====================");
+		    /*console.log("======================PRODUCTS LISTING====================");
 		    console.log("ID             Product Name                 Price             In Stock");
 		    for(i = 0; i < result.length; i++){
 		    	console.log(result[i].item_id + "     " + result[i].product_name + "     " + result[i].price + "         " + result[i].stock_quantity);
-		    }
+		    }*/
+		    console.table(result);
 		    if(conn){
 			 	conn.release();
 			 	mysql.end();
@@ -83,11 +85,12 @@ function fnViewLowInventory(){
 		  conn.query(sql, function (err, result) {
 		    if (err) throw err;
 		    //output results formatted nicely
-		    console.log("=============LOW INVENTORY PRODUCTS LISTING====================");
+		    /*console.log("=============LOW INVENTORY PRODUCTS LISTING====================");
 		    console.log("ID             Product Name                 Price             In Stock");
 		    for(i = 0; i < result.length; i++){
 		    	console.log(result[i].item_id + "     " + result[i].product_name + "     " + result[i].price + "         " + result[i].stock_quantity);
-		    }
+		    }*/
+		    console.table(result);
 		    if(conn){
 			 	conn.release();
 			 	mysql.end();

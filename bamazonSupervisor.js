@@ -1,5 +1,6 @@
 var mysql = require('mysql');
 var inquirer = require("inquirer");
+var nicetable = require('console.table');
 
 var mysql = require('./mysql.js').pool;
 	function takeAction(){
@@ -22,13 +23,9 @@ var mysql = require('./mysql.js').pool;
 
 		    			switch(inquirerResponse.reqaction[0]){
 						case "View Products Sales by Department":
-							//console.log("products");
-							console.log("view prod sales");
 							fnViewProductSales();
 						break;
 						case "Create New Department":
-							//console.log("low inventory");
-							console.log("new department");
 							fnCreateNewDept();
 						break;
 						default:
@@ -44,7 +41,6 @@ takeAction();
 
 function fnViewProductSales(){
 
-	console.log("in the view prod sales function");
 	mysql.getConnection(function(err, conn){
 		
 		  if (err) throw err;
@@ -52,13 +48,10 @@ function fnViewProductSales(){
 		  "(product_sales - over_head_costs) as total_profit from departments";
 		  conn.query(sql, function (err, result) {
 		    if (err) throw err;
-		    //output results formatted nicely
-		    console.log("=============DEPARTMENT SALES SUMMARY====================");
-		    console.log("ID             Department Name          Overhead Costs          Product Sales         Total Profit");
-		    for(i = 0; i < result.length; i++){
-		    	console.log(result[i].department_id + "     " + result[i].department_name + "     " + result[i].over_head_costs + "         " + result[i].product_sales + "        " + result[i].total_profit);
-		    }
-		    if(conn){
+		    //console.table(['ID', 'Department Name', 'Overhead Costs', 'Product Sales', 'Total Profit'], result);
+			//console.table(result[0], result.slice(1));
+			console.table(result);
+			if(conn){
 			 	conn.release();
 			 	mysql.end();
 			 	

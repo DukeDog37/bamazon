@@ -1,6 +1,7 @@
 var mysql = require('mysql');
 var inquirer = require("inquirer");
 var mysql = require('./mysql.js').pool;
+var nicetable = require('console.table');
 
 
 function fnGetProducts(){
@@ -11,12 +12,7 @@ function fnGetProducts(){
 		  
 		  conn.query(sql, function (err, result) {
 		    if (err) throw err;
-		    //output results formatted nicely
-		    console.log("======================PRODUCTS LISTING====================");
-		    console.log("ID             Product Name                 Price");
-		    for(i = 0; i < result.length; i++){
-		    	console.log(result[i].item_id + "     " + result[i].product_name + "     " + result[i].price);
-		    }
+		    console.table(result);
 		    //inquire for product id to purchase
 		    inquirer
 			.prompt([
@@ -79,13 +75,13 @@ function fnGetProducts(){
 			    			throw err;
 			    		}
 			    		else{
-			    			console.log("ITEM_ID: " + inquirerResponse.itemid + " product_sales value updated");
+			    			//console.log("ITEM_ID: " + inquirerResponse.itemid + " product_sales value updated");
 			    		}
 			    	});
 			    	var intNewQuantity = result[0].stock_quantity - inquirerResponse.quantity;
 			    	var sqlUpdateQ = "UPDATE products SET stock_quantity = " + intNewQuantity +
 			    	" WHERE item_id = " + inquirerResponse.itemid;
-		    		console.log(sqlUpdateQ);
+		    		//console.log(sqlUpdateQ);
 		    		conn.query(sqlUpdateQ, function (err, updateresult) {
 		    			if (err){
 			    			throw err;
