@@ -35,7 +35,7 @@ var mysql = require('./mysql.js').pool;
 							fnAddInventory();
 						break;
 						case "Add New Product":
-							console.log("new product");
+							//console.log("new product");
 							fnAddProduct();
 						break;
 						default:
@@ -59,12 +59,6 @@ function fnViewProducts(){
 		  var sql = "SELECT * FROM products";
 		  conn.query(sql, function (err, result) {
 		    if (err) throw err;
-		    //output results formatted nicely
-		    /*console.log("======================PRODUCTS LISTING====================");
-		    console.log("ID             Product Name                 Price             In Stock");
-		    for(i = 0; i < result.length; i++){
-		    	console.log(result[i].item_id + "     " + result[i].product_name + "     " + result[i].price + "         " + result[i].stock_quantity);
-		    }*/
 		    console.table(result);
 		    if(conn){
 			 	conn.release();
@@ -84,12 +78,6 @@ function fnViewLowInventory(){
 		  var sql = "SELECT * FROM products WHERE stock_quantity < 200";
 		  conn.query(sql, function (err, result) {
 		    if (err) throw err;
-		    //output results formatted nicely
-		    /*console.log("=============LOW INVENTORY PRODUCTS LISTING====================");
-		    console.log("ID             Product Name                 Price             In Stock");
-		    for(i = 0; i < result.length; i++){
-		    	console.log(result[i].item_id + "     " + result[i].product_name + "     " + result[i].price + "         " + result[i].stock_quantity);
-		    }*/
 		    console.table(result);
 		    if(conn){
 			 	conn.release();
@@ -189,15 +177,12 @@ function fnAddProduct(){
 		} 
 		//console.log("before sql build");
 		var sql = "SELECT department_name FROM departments";
-		//console.log("before run sql");
-		///console.log(sql);
 		conn.query(sql, function (err, result) {
 			if (err){
 				throw err;
 			} 
 			else{
 				//populate array of departments to select from
-				//console.log("before pop array of depts");
 				var strChoices = [];
 			    for(i = 0; i < result.length; i++){
 			    	//console.log(result[i].department_name);

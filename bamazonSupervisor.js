@@ -48,9 +48,7 @@ function fnViewProductSales(){
 		  "(product_sales - over_head_costs) as total_profit from departments";
 		  conn.query(sql, function (err, result) {
 		    if (err) throw err;
-		    //console.table(['ID', 'Department Name', 'Overhead Costs', 'Product Sales', 'Total Profit'], result);
-			//console.table(result[0], result.slice(1));
-			console.table(result);
+		    console.table(result);
 			if(conn){
 			 	conn.release();
 			 	mysql.end();
